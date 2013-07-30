@@ -33,3 +33,12 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Virtualenv
+.Python
+bin
+lib
+include
+
+# Mac OS X custom attribute files
+.DS_Store

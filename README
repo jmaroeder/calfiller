@@ -1,0 +1,7 @@
+calfiller
+
+Takes a list of period times, a list of day designations, and a list of dates -> day designations
+
+Presents a table of day designations x period times
+
+Creates an ical(?) file of the filled-in boxes repeated across all dates
