@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+<title>Schedule</title>
+</head>
+
+<body>
+<table>
+	<tr>
+		<th>Period</th>
+		{% for letter in letter_days %}
+		<th>{{ letter }}</th>
+		{% endfor %}
+	</tr>
+	
+	{% for period in periods %}
+	<tr>
+		<td>{{ period.name }}<br>
+			{{ period.start }} - {{ period.end }}</td>
+		{% for letter in letter_days %}
+		<td>
+			<input type="text">
+			</td>
+	</tr>
+	{% endfor %}
+</table>
+
+</body>
+</html>
