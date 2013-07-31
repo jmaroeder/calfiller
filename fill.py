@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # encoding: utf-8
 """
 fill.py
@@ -13,6 +12,9 @@ import os
 from icalendar import Calendar, Event
 from datetime import datetime, date, time
 import pytz
+
+import csv
+
 
 class Schedule(object):
 	"""docstring for Schedule"""
@@ -31,9 +33,9 @@ class Schedule(object):
 		if loc is None:
 			loc = ''
 		
-		self.appts.add( (letter_day, period, title, loc) )
+		self.appts.append( (letter_day, period, title, loc) )
 
-	def to_ical():
+	def to_ical(self):
 		cal = Calendar()
 		for a in self.appts:
 			letter_day, period, title, loc = a
@@ -48,11 +50,42 @@ class Schedule(object):
 						event.add('location', loc)
 					event.add('dtstart', datetime.combine(d[0], start_time))
 					event.add('dtend', datetime.combine(d[0], end_time))
-
-
+					
+					cal.add_component(event)
+					
+		return cal.to_ical()
+	
+	
 def main():
-	pass
-
+	periods = dict()
+	with open('periods.csv', 'rU') as csvfile:
+		reader = csv.DictReader(csvfile)
+		for r in reader:
+			period = r['period']
+			start = time(*(map(int, r['start'].split(':'))))
+			end = time(*(map(int, r['end'].split(':'))))
+			periods[period] = (start, end)
+	
+	letter_days = 'ABCDEF'
+	
+	dates_days = []
+	with open('dates_days.csv', 'rU') as csvfile:
+		reader = csv.DictReader(csvfile)
+		for r in reader:
+			date_obj = date(*(map(int, r['date'].split('-'))))
+			day = r['day']
+			dates_days.append((date_obj, day))
+	
+	
+	sched = Schedule(periods, letter_days, dates_days)
+	
+	sched.add('1', 'A', 'early fun', 'aud')
+	sched.add('2', 'B', 'midday')
+	
+	print(sched.to_ical())
+	
+	with open('test.ics', 'w') as f:
+		f.write(sched.to_ical())
 
 if __name__ == '__main__':
 	main()
