@@ -1,6 +1,6 @@
 # encoding: utf-8
 """
-fill.py
+schedule.py
 
 Created by James Allen on 2013-07-29.
 Copyright (c) 2013 __MyCompanyName__. All rights reserved.
@@ -73,7 +73,7 @@ def main():
 		reader = csv.DictReader(csvfile)
 		for r in reader:
 			date_obj = date(*(map(int, r['date'].split('-'))))
-			day = r['day']
+			day = r['day_name']
 			dates_days.append((date_obj, day))
 	
 	
