@@ -1,10 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
 <title>Schedule</title>
 </head>
 
 <body>
+<form action="" method="post">
 <table>
 	<tr>
 		<th>Period</th>
@@ -12,18 +13,27 @@
 		<th>{{ letter }}</th>
 		{% endfor %}
 	</tr>
+	{% set i = 0 %}
 	
 	{% for period in periods %}
 	<tr>
-		<td>{{ period.name }}<br>
-			{{ period.start }} - {{ period.end }}</td>
+		<td><strong>{{ period.name }}</strong><br>
+			<small>{{ period.start }} - {{ period.end }}</small></td>
+		{% set j = 0 %}
 		{% for letter in letter_days %}
 		<td>
-			<input type="text">
-			</td>
+			<input type="text" name="sched_{{ i }}_{{ j }}">
+		</td>
+		{% set j = j + 1 %}
+		{% endfor %}
 	</tr>
+	{% set i = i + 1 %}
 	{% endfor %}
 </table>
+
+<input type="submit">
+
+</form>
 
 </body>
 </html>
