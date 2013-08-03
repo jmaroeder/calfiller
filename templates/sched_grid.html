@@ -1,39 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Schedule</title>
-</head>
-
-<body>
+{% extends "layout.html" %}
+{% block body %}
 <form action="" method="post">
 <table>
 	<tr>
 		<th>Period</th>
-		{% for letter in letter_days %}
-		<th>{{ letter }}</th>
+		{% for letter in g.sched.letter_days %}
+		<th>{{ letter.name }}</th>
 		{% endfor %}
 	</tr>
-	{% set i = 0 %}
 	
-	{% for period in periods %}
+	{% for period in g.sched.periods %}
 	<tr>
 		<td><strong>{{ period.name }}</strong><br>
-			<small>{{ period.start }} - {{ period.end }}</small></td>
-		{% set j = 0 %}
-		{% for letter in letter_days %}
+			<small>{{ period.start_time }} - {{ period.end_time }}</small></td>
+		{% for letter in g.sched.letter_days %}
 		<td>
-			<input type="text" name="sched_{{ i }}_{{ j }}">
+			<input type="text" name="sched_{{ letter.id }}_{{ period.id }}">
 		</td>
-		{% set j = j + 1 %}
 		{% endfor %}
 	</tr>
-	{% set i = i + 1 %}
 	{% endfor %}
 </table>
 
 <input type="submit">
 
 </form>
-
-</body>
-</html>
+{% endblock %}

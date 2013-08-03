@@ -1,0 +1,107 @@
+{% extends 'layout.html' %}
+{% block body %}
+<p align="right"><a href="{{ url_for('logout') }}">Logout</a></p>
+
+{% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+
+<p>Periods CSV must be in format <code>period,start,end</code>. E.g.,
+<pre>period,start,end
+{% if periods %}{% for row in periods %}{{ row.name }},{{ row.start_time }},{{ row.end_time }}
+{% endfor %}{% else %}Morning Meeting,8:00,8:10
+1st period,8:13,9:03
+2nd period,9:07,9:57
+Laboratory,10:01,10:31
+3rd period,10:31,11:21
+4th period,11:25,12:15
+Period X,12:19,12:59
+Lunch,12:59,13:29
+5th period,13:33,14:23
+6th period,14:27,15:17{% endif %}</pre>
+</p>
+
+<form enctype="multipart/form-data" action="" method="post">
+<input type="hidden" name="action" value="upload_periods">
+<dl>
+	<dt>Periods CSV:</dt>
+	<dd><input type="file" name="file"></dd>
+	<dt>&nbsp;</dt>
+	<dd><input type="submit" value="Upload Periods"></dd>
+</dl>
+</form>
+
+<hr>
+
+<p>Day names TXT should be a plain text file with just the names of the days,
+	one per line, with no header row. E.g.,
+<pre>{% if day_names %}{% for row in day_names %}{{ row.name }}
+{% endfor %}{% else %}A day
+B day
+C day
+D day
+E day
+F day{% endif %}</pre>
+<strong>You will need to re-upload the Dates below if you upload these.</strong>
+</p>
+
+<form enctype="multipart/form-data" action="" method="post">
+<input type="hidden" name="action" value="upload_letter_days">
+<dl>
+	<dt>Day Names TXT:</dt>
+	<dd><input type="file" name="file"></dd>
+	<dt>&nbsp;</dt>
+	<dd><input type="submit" value="Upload Day Names"></dd>
+</dl>
+</form>
+
+<hr>
+
+
+<p>Dates CSV must be in format date,day_name. E.g.,
+<pre>date,day_name
+{% if dates %}{% for row in dates %}{{ row.date }},{{ row.letter_day.name }}
+{% endfor %}{% else %}2013-08-21,A day
+2013-08-22,B day
+2013-08-23,C day
+2013-08-26,D day
+2013-08-27,E day
+2013-08-28,F day
+2013-08-29,A day
+2013-08-30,B day
+2013-09-03,C day
+2013-09-04,D day
+{% endif %}...</pre>
+Additionally, <strong>the day name must EXACTLY match the day names that were uploaded above.</strong>
+You must upload day names before you can upload dates.
+</p>
+
+<form enctype="multipart/form-data" action="" method="post">
+<input type="hidden" name="action" value="upload_dates_days">
+<dl>
+	<dt>Dates CSV:</dt>
+	<dd><input type="file" name="file"></dd>
+	<dt>&nbsp;</dt>
+	<dd><input type="submit" value="Upload Dates"></dd>
+</dl>
+</form>
+
+
+<hr>
+
+
+<h3>Change Password</h3>
+
+<form action="" method="post">
+<input type="hidden" name="action" value="change_password">
+<dl>
+	<dt>Old password</dt>
+	<dd><input type="password" name="old_password"></dd>
+	<dt>New password</dt>
+	<dd><input type="password" name="new_password1"></dd>
+	<dt>New password (again)</dt>
+	<dd><input type="password" name="new_password2"></dd>
+	<dt>&nbsp;</dt>
+	<dd><input type="submit" value="Change Password"></dd>
+</dl>
+
+
+{% endblock %}

@@ -45,3 +45,9 @@ include
 
 # Textmate Proj
 *.tmproj
+
+# Database
+*.db
+
+# Config
+*.cfg
