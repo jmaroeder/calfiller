@@ -14,8 +14,6 @@ from flask import Flask, request, session, g, redirect, url_for, \
 from flask.ext.sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from flaskext.lesscss import lesscss
-
 #from schedule import Schedule
 
 from contextlib import closing
@@ -38,8 +36,6 @@ SCHOOL_ID = 1
 # create app
 app = Flask(__name__)
 app.config.from_pyfile('calfiller.cfg')
-
-lesscss(app)
 
 
 # 
