@@ -1,8 +1,11 @@
 {% extends "layout.html" %}
 {% block body %}
-
 {% if g.sched.letter_days and g.sched.periods %}
-
+<p>Fill in the boxes below where you have scheduled appointments. Leave free
+	periods blank.</p>
+<p>Click the <b>Download</b> button at the bottom when you're done, and a file
+	named <b>schedule.ics</b> will be saved to your computer. You can import this
+	file into Google Calendar, iCal, and many other calendar apps.</p>
 <form action="" method="post">
 <table class="table-bordered table-striped table-highlight-xy">
 	<colgroup></colgroup>
@@ -16,7 +19,7 @@
 	
 	{% for period in g.sched.periods %}
 	<tr>
-		<td><strong>{{ period.name }}</strong><br>
+		<td><b>{{ period.name }}</b><br>
 			<small>{{ period.start_time|time }} - {{ period.end_time|time }}</small></td>
 		{% for letter in g.sched.letter_days %}
 		<td>
@@ -32,6 +35,7 @@
 </div>
 </form>
 {% else %}
-<p>School is not set up!</p>
+<p>{{ g.school.name }} is not set up yet!</p>
+<p>Please contact your system administrator to get this school set up for the year.</p>
 {% endif %}
 {% endblock %}

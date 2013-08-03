@@ -151,7 +151,8 @@ def teardown_request(exception):
 
 @app.route('/')
 def list_schools():
-    return 'TODO'
+    schools = School.query.order_by(School.name.asc()).all()
+    return render_template('list_schools.html', schools=schools)
 
 
 @app.route('/<school_name>', methods=['GET', 'POST'])
