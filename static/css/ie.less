@@ -1,0 +1,47 @@
+@import 'variables.less';
+@import 'wee.less';
+@import 'responsive.less';
+
+table {
+	white-space: normal;
+}
+button,
+input,
+select,
+textarea {
+	vertical-align: middle;
+}
+.inline-block {
+	*display: inline;
+	*zoom: 1;
+}
+.clear,
+.checkbox label {
+	*zoom: 1;
+}
+
+////////////////
+// Responsive //
+////////////////
+
+html {
+	font-family: "'@{ieBreakpoint}'";
+}
+
+.fallback (@ieBreakpoint) when (@ieBreakpoint > 1) {
+	.mobileLandscape;
+}
+.fallback (@ieBreakpoint) when (@ieBreakpoint > 2) {
+	.tabletPortrait;
+}
+.fallback (@ieBreakpoint) when (@ieBreakpoint > 3) {
+	.smallDesktop;
+}
+.fallback (@ieBreakpoint) when (@ieBreakpoint > 4) {
+	.mediumDesktop;
+}
+.fallback (@ieBreakpoint) when (@ieBreakpoint > 5) {
+	.largeDesktop;
+}
+
+.fallback(@ieBreakpoint);

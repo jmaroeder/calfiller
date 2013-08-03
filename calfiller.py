@@ -9,10 +9,12 @@ Copyright (c) 2013 __MyCompanyName__. All rights reserved.
 import sqlite3
 
 from flask import Flask, request, session, g, redirect, url_for, \
-    abort, render_template, flash, make_response
+    abort, render_template, flash, make_response, send_from_directory
 
 from flask.ext.sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+
+from flaskext.lesscss import lesscss
 
 #from schedule import Schedule
 
@@ -23,7 +25,7 @@ from icalendar import Calendar, Event
 
 import dateutil.parser
 import csv
-import io
+import io, os
 import re
 
 
@@ -36,6 +38,8 @@ SCHOOL_ID = 1
 # create app
 app = Flask(__name__)
 app.config.from_pyfile('calfiller.cfg')
+
+lesscss(app)
 
 
 # 
@@ -305,7 +309,7 @@ def admin():
     
     periods = Period.query.filter_by(school=g.school).all()
     day_names = LetterDay.query.filter_by(school=g.school).all()
-    dates = DatesDays.query.filter_by(school=g.school).limit(4).all()
+    dates = DatesDays.query.filter_by(school=g.school).limit(10).all()
     #assert False
     return render_template('admin.html', error=error,
                            day_names=day_names, dates=dates, periods=periods)
@@ -319,6 +323,17 @@ def logout():
     flash('Logged out.')
     return redirect(url_for('login'))
 
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+
+@app.template_filter('time')
+def _jinja2_filter_time(t, fmt=None):
+    format = '%I:%M%p'
+    return t.strftime(format) 
 
 if __name__ == '__main__':
     app.run()

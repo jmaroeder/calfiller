@@ -1,7 +1,12 @@
 {% extends "layout.html" %}
 {% block body %}
+
+{% if g.sched.letter_days and g.sched.periods %}
+
 <form action="" method="post">
-<table>
+<table class="table-bordered table-striped table-highlight-xy">
+	<colgroup></colgroup>
+	{% for letter in g.sched.letter_days %}<colgroup></colgroup>{% endfor %}
 	<tr>
 		<th>Period</th>
 		{% for letter in g.sched.letter_days %}
@@ -12,7 +17,7 @@
 	{% for period in g.sched.periods %}
 	<tr>
 		<td><strong>{{ period.name }}</strong><br>
-			<small>{{ period.start_time }} - {{ period.end_time }}</small></td>
+			<small>{{ period.start_time|time }} - {{ period.end_time|time }}</small></td>
 		{% for letter in g.sched.letter_days %}
 		<td>
 			<input type="text" name="sched_{{ letter.id }}_{{ period.id }}">
@@ -22,7 +27,11 @@
 	{% endfor %}
 </table>
 
-<input type="submit">
-
+<div align="right">
+<input type="submit" value="Download iCal file" class="button colored-button">
+</div>
 </form>
+{% else %}
+<p>School is not set up!</p>
+{% endif %}
 {% endblock %}
