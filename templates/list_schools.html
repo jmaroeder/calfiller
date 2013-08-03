@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+{% block body %}
+<p>Select a school:</p>
+<ul>
+{% for row in schools %}
+<li><a href ="/{{ row.short_name }}">{{ row.name }}</a></li>
+{% endfor %}
+</ul>
+
+<p>Interested in getting CalFiller for your school? Contact <a href="http://jamesmallen.net">James M. Allen</a>.</p>
+{% endblock %}
