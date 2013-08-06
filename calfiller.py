@@ -35,7 +35,7 @@ SCHOOL_ID = 1
 
 # create app
 app = Flask(__name__)
-app.config.from_pyfile('calfiller.cfg')
+app.config.from_pyfile('config.py')
 
 
 # 
@@ -77,9 +77,11 @@ class Period(db.Model):
     name = db.Column(db.String(100))
     start_time = db.Column(db.Time, nullable=False)
     end_time = db.Column(db.Time, nullable=False)
+    special = db.Column(db.Integer, default=0, nullable=False)
     
     school_id = db.Column(db.Integer, db.ForeignKey('schools.id'), nullable=False)
     school = db.relationship('School', backref=db.backref('periods', lazy='dynamic'))
+    
 
 
 class LetterDay(db.Model):
@@ -98,15 +100,13 @@ class DatesDays(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date, nullable=False)
+    special = db.Column(db.Integer, default=0, nullable=False)
     
     letter_day_id = db.Column(db.Integer, db.ForeignKey('letter_days.id'), nullable=False)
     letter_day = db.relationship('LetterDay', backref=db.backref('dates_days', lazy='dynamic'))
     
     school_id = db.Column(db.Integer, db.ForeignKey('schools.id'), nullable=False)
     school = db.relationship('School', backref=db.backref('dates_days', lazy='dynamic'))
-    
-    
-    
     
 
 
@@ -126,17 +126,24 @@ class Schedule(object):
         for a in self.appts:
             for d in self.dates_days:
                 if d.letter_day == a['letter_day']:
+                    period = a['period']
+                    if d.special != 0:
+                        # special schedule day - find the special schedule
+                        alt_period = Period.query.filter_by(school=period.school,
+                                                            name=period.name,
+                                                            special=d.special).first()
+                        if alt_period:
+                            period = alt_period
+                    
                     event = Event()
                     event.add('summary', a['title'])
-                    event.add('dtstart', datetime.combine(d.date, a['period'].start_time))
-                    event.add('dtend', datetime.combine(d.date, a['period'].end_time))
-                    event.add('location', '') # Location seems to be required
+                    event.add('dtstart', datetime.combine(d.date, period.start_time))
+                    event.add('dtend', datetime.combine(d.date, period.end_time))
+                    event.add('location', '') # Location seems to be required by Google
                     cal.add_component(event)
                     added += 1
 
-        #flash("Saved {} appointments.".format(added))
         return cal.to_ical()
-
 
 
 @app.before_request
@@ -159,7 +166,7 @@ def list_schools():
 def cal_table(school_name):
     g.school = School.query.filter_by(short_name=school_name).first_or_404()
     session['school_id'] = g.school.id
-    g.sched = Schedule(periods=Period.query.filter_by(school=g.school).
+    g.sched = Schedule(periods=Period.query.filter_by(school=g.school,special=0).
                                order_by(Period.start_time.asc(), Period.end_time.asc()).all(),
                        letter_days=LetterDay.query.filter_by(school=g.school).
                                    order_by(LetterDay.display_order.asc()).all())
@@ -202,7 +209,8 @@ def import_periods(f, school, clear=True):
         db.session.add(Period(name=r['period'],
                               start_time=dateutil.parser.parse(r['start']).time(),
                               end_time=dateutil.parser.parse(r['end']).time(),
-                              school=school))
+                              school=school,
+                              special=r.get('special')))
         added += 1
     db.session.commit()
     return added
@@ -234,9 +242,11 @@ def import_dates_days(f, school, clear=True):
     reader = csv.DictReader(f)
     for r in reader:
         letter_day = LetterDay.query.filter_by(school=school, name=r['day_name']).first()
+        special = r.get('special')
         db.session.add(DatesDays(date=dateutil.parser.parse(r['date']).date(),
                                  letter_day=letter_day,
-                                 school=school))
+                                 school=school,
+                                 special=r.get('special')))
         added += 1
         
     db.session.commit()
@@ -307,7 +317,6 @@ def admin():
     periods = Period.query.filter_by(school=g.school).all()
     day_names = LetterDay.query.filter_by(school=g.school).all()
     dates = DatesDays.query.filter_by(school=g.school).limit(10).all()
-    #assert False
     return render_template('admin.html', error=error,
                            day_names=day_names, dates=dates, periods=periods)
 
