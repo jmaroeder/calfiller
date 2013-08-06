@@ -1,11 +1,21 @@
-period,start,end
-Morning Meeting,8:00,8:19
-1st period,8:20,9:09
-2nd period,9:10,9:59
-Break,10:00,10:09
-3rd period,10:10,10:59
-4th period,11:00,11:49
-Lunch,11:50,12:39
-5th period,12:40,13:29
-6th period,13:30,14:19
-7th period,14:20,15:10
+period,start,end,special
+Morning Meeting,8:00,8:18,0
+1st period,8:20,9:08,0
+2nd period,9:10,9:58,0
+Break,10:00,10:08,0
+3rd period,10:10,10:58,0
+4th period,11:00,11:48,0
+Lunch,11:50,12:38,0
+5th period,12:40,13:28,0
+6th period,13:30,14:18,0
+7th period,14:20,15:10,0
+Morning Meeting,8:00,8:18,1
+1st period,8:20,9:03,1
+2nd period,9:05,9:48,1
+Break,9:50,10:00,1
+3rd period,10:35,11:18,1
+4th period,11:20,12:03,1
+Lunch,12:05,12:38,1
+5th period,12:40,13:28,1
+6th period,13:30,14:18,1
+7th period,14:20,15:10,1
