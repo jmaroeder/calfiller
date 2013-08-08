@@ -96,7 +96,6 @@ label{font-weight:normal;display:block;line-height:1.3em;margin-bottom:4px;margi
 input[type='email'],input[type='file'],input[type='password'],input[type='search'],input[type='tel'],input[type='text'],textarea{background:#ffffff;color:#595959;-moz-appearance:none;-webkit-appearance:none;border:1px solid #bfbfbf;width:100%;min-height:35px;min-height:3.5rem;min-width:50px;padding-top:2px;padding-top:0.2rem;padding-right:8px;padding-right:0.8rem;padding-bottom:2px;padding-bottom:0.2rem;padding-left:8px;padding-left:0.8rem;border-radius:3px;-moz-background-clip:border;-webkit-background-clip:border-box;background-clip:border-box;-webkit-box-shadow:inset 1px 1px 2px 0 rgba(0, 0, 0, 0.1);box-shadow:inset 1px 1px 2px 0 rgba(0, 0, 0, 0.1);margin-bottom:14px;margin-bottom:1.4rem;}input[type='email']:hover,input[type='file']:hover,input[type='password']:hover,input[type='search']:hover,input[type='tel']:hover,input[type='text']:hover,textarea:hover{border:1px solid #a6a6a6;}
 input[type='email']:focus,input[type='file']:focus,input[type='password']:focus,input[type='search']:focus,input[type='tel']:focus,input[type='text']:focus,textarea:focus{-webkit-box-shadow:0 0 2px 2px rgba(0, 0, 0, 0.1);box-shadow:0 0 2px 2px rgba(0, 0, 0, 0.1);}
 input[type='search']::-webkit-search-decoration{display:none;}
-input[type='text']{height:100%;}
 input[type='button'],input[type='reset'],input[type='submit']{cursor:pointer;-moz-appearance:none;-webkit-appearance:none;}
 select{outline:0;border:1px solid #bfbfbf;font-size:14px;font-size:1.4rem;display:inline-block;min-width:50px;padding-top:2px;padding-top:0.2rem;padding-right:2px;padding-right:0.2rem;padding-bottom:2px;padding-bottom:0.2rem;padding-left:8px;padding-left:0.8rem;border-radius:3px;-moz-background-clip:border;-webkit-background-clip:border-box;background-clip:border-box;margin-bottom:14px;margin-bottom:1.4rem;width:100%;}select:hover{border:1px solid #a6a6a6;}
 select[multiple]{vertical-align:top;min-height:80px;min-height:8rem;}
@@ -133,6 +132,8 @@ footer[role='contentinfo']{background:#f2f2f2;color:#a6a6a6;text-align:center;bo
 .flash{background:#cee5f5;padding:0.5em;border:1px solid #aacbe2;border-radius:3px;-moz-background-clip:border;-webkit-background-clip:border-box;background-clip:border-box;}
 .error{background:#f0d6d6;padding:0.5em;}
 main .container{margin-top:.75em;}
+.appointmentname input[type='text']{height:100%;}
+.timerange input[type='text']{height:60%;width:40%;}
 .mobileLandscape header[role='banner']{background:#006e89;overflow:hidden;}.mobileLandscape header[role='banner'] .container{padding-left:5%;padding-right:5%;}
 .mobileLandscape header[role='banner'] #logo{padding:0;float:left;}
 .mobileLandscape nav[role='navigation']{background:none;padding:0;float:right;}.mobileLandscape nav[role='navigation'] ul li{display:inline;}

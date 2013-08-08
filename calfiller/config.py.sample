@@ -1,0 +1,13 @@
+# Sample configuration - update this!
+# Copy this file to config.py, and edit the values to suit
+import os, tempfile
+_basedir = os.path.abspath(os.path.dirname(__file__))
+
+# configuration
+
+DEBUG = False
+
+SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(_basedir, 'calfiller.db')
+DATABASE_CONNECT_OPTIONS = {}
+
+SECRET_KEY = 'CHANGETHISKEY'

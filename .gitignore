@@ -48,6 +48,3 @@ include
 
 # Database
 *.db
-
-# Config
-*.cfg

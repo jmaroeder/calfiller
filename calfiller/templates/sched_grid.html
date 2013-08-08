@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% block body %}
+{% if g.sched.letter_days %}
+<p>Fill in the boxes below where you have scheduled appointments. Leave free
+	periods blank.</p>
+<p>Click the <b>Download</b> button at the bottom when you're done, and a file
+	named <b>schedule.ics</b> will be saved to your computer. You can import
+	this file into Google Calendar, iCal, and many other calendar apps.</p>
+<p>Please note that you <b>must use this tool from a computer</b>. After it
+	is set up, you can access Google Calendar from an iPad, but the iPad
+	will not let you save the file to put it in Google Calendar.</p>
+<form action="" method="post">
+{% if g.sched.periods %}
+<table class="table-bordered table-striped table-highlight-xy">
+	<colgroup></colgroup>
+	{% for letter in g.sched.letter_days %}<colgroup></colgroup>{% endfor %}
+	<tr>
+		<th>Period</th>
+		{% for letter in g.sched.letter_days %}
+		<th>{{ letter.name }}</th>
+		{% endfor %}
+	</tr>
+	
+	{% for period in g.sched.periods %}
+	<tr>
+		<td><b>{{ period.name }}</b><br>
+			<small>{{ period.start_time|time }} - {{ period.end_time|time }}</small></td>
+		{% for letter in g.sched.letter_days %}
+		<td class="appointmentname">
+			<input type="text" name="sched_{{ letter.id }}_{{ period.id }}">
+		</td>
+		{% endfor %}
+	</tr>
+	{% endfor %}
+</table>
+{% else %}
+<p>Fill in start and end times underneath appointments using "am" or "pm,"
+	e.g., <code>9:30am</code> - <code>10:05am</code>. Do not leave the start
+	or end times blank for any appointments that you wish to schedule.
+	If you leave either time blank, the appointment will be ignored or you
+	will receive an error message.</p>
+<table class="table-bordered table-striped table-highlight-xy">
+	{% for letter in g.sched.letter_days %}<colgroup></colgroup>{% endfor %}
+	<tr>
+		{% for letter in g.sched.letter_days %}
+		<th>{{ letter.name }}</th>
+		{% endfor %}
+	</tr>
+	{% for period in range(1, 11) %}
+	<tr>
+		{% for letter in g.sched.letter_days %}
+		<td class="appointmentname">
+			<input type="text" name="sched_{{ letter.id }}_{{ period }}">
+		</td>
+		{% endfor %}
+	</tr>
+	<tr>
+		{% for letter in g.sched.letter_days %}
+		<td class="timerange">
+			<input type="text" name="start_{{ letter.id }}_{{ period }}">&nbsp;-&nbsp;<input type="text" name="end_{{ letter.id }}_{{ period }}">
+		</td>
+		{% endfor %}
+	</tr>
+	{% endfor %}
+</table>
+{% endif %}
+
+<div align="right">
+<input type="submit" value="Download iCal file" class="button colored-button">
+</div>
+</form>
+{% else %}
+<p>{{ g.school.name }} is not set up yet!</p>
+<p>Please contact your system administrator to get this school set up for the year.</p>
+{% endif %}
+{% endblock %}
