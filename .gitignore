@@ -48,4 +48,6 @@ include
 
 # Database
 *.db
+
+# Config
 config.py

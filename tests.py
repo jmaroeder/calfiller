@@ -1,27 +1,27 @@
 import os
 import unittest
-import tempfile
 import io
+import re
 
-from calfiller import app, create_app
+# Enable testing config before importing calfiller
+os.environ['CALFILLER_EXTRA_CONFIG'] = 'testing'
+
+
+from calfiller import app, db
 from calfiller.models import *
-
 
 
 class CalfillerTestCase(unittest.TestCase):
     
     def setUp(self):
-        self.db_fd, self.db_filename = tempfile.mkstemp()
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + self.db_filename
-        app.config['TESTING'] = True
-        create_app()
         self.app = app.test_client()
         db.create_all()
         self.load_test_data()
         
     def tearDown(self):
-        os.close(self.db_fd)
-        os.unlink(self.db_filename)
+        db.session.remove()
+        db.drop_all()
+        pass
     
     def load_test_data(self):
         db.session.add(School(name='Test School 1', short_name='ts1', password_hash=generate_password_hash('test1')))
@@ -52,50 +52,78 @@ class CalfillerTestCase(unittest.TestCase):
         assert 'Invalid username/password' in rv.data
         
     
-    def test_admin(self):
-        rv = self.login('ts1', 'test1')
-        rv = self.app.post()
-        
+    def load_sample_data(self):
         school = School.query.filter_by(short_name='ts1').first()
         # upload periods
-        with open('periods_us.csv') as f:
+        with open('periods_us.csv', 'rU') as f:
             assert import_periods(f, school) == 10
         
         # upload day names
-        with open('day_names.csv') as f:
+        with open('day_names.csv', 'rU') as f:
             assert import_letter_days(f, school) == 6
         
         # upload dates_days
-        with open('dates_days_us.csv') as f:
+        with open('dates_days_us.csv', 'rU') as f:
             assert import_dates_days(f, school) == 165
         
         
         school = School.query.filter_by(short_name='ts2').first()
         # upload periods
-        with open('periods_ms.csv') as f:
-            assert import_periods(f, school) == 10
+        with open('periods_ms.csv', 'rU') as f:
+            assert import_periods(f, school) == 20
         
         # upload day names
-        with open('day_names.csv') as f:
+        with open('day_names.csv', 'rU') as f:
             assert import_letter_days(f, school) == 6
         
         # upload dates_days
-        with open('dates_days_ms.csv') as f:
-            assert import_dates_days(f, school) == 165
+        with open('dates_days_ms.csv', 'rU') as f:
+            assert import_dates_days(f, school) == 164
         
 
         school = School.query.filter_by(short_name='ts3').first()
         # NO periods
 
         # upload day names
-        with open('day_names.csv') as f:
+        with open('day_names.csv', 'rU') as f:
             assert import_letter_days(f, school) == 6
 
         # upload dates_days
-        with open('dates_days_us.csv') as f:
+        with open('dates_days_us.csv', 'rU') as f:
             assert import_dates_days(f, school) == 165
-
+        
+    
+    def test_importers(self):
+        self.load_sample_data()
+    
+    
+    def test_ts1(self):
+        self.load_sample_data()
+        
+        school = School.query.filter_by(short_name='ts1').first()
+        
+        rv = self.app.get('/ts1')
+        assert 'Test School 1' in rv.data
+        
+        begin_vevent = re.compile(r'BEGIN:VEVENT')
+        
+        # test each letter day/period combo
+        for letter_day in LetterDay.query.filter_by(school=school).all():
+            for period in Period.query.filter_by(school=school).all():
+                field_name = 'sched_{}_{}'.format(letter_day.id, period.id)
+                appt_summary = '{}:{}'.format(letter_day.name, period.name)
+                rv = self.app.post('/ts1', data={
+                    field_name: appt_summary
+                })
+                res = begin_vevent.findall(rv.get_data())
+                # test number of events added
+                assert len(res) == len(DatesDays.query.filter_by(school=school, letter_day=letter_day).all())
+                
         
         
 if __name__ == '__main__':
     unittest.main()
+    
+    # close out db fd/delete file
+    os.close(app.config['DB_FD'])
+    os.unlink(app.config['DB_FILENAME'])
