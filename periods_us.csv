@@ -1,11 +1,65 @@
-period,start,end
-Morning Meeting,8:00,8:10
-1st period,8:13,9:03
-2nd period,9:07,9:57
-Laboratory,10:01,10:31
-3rd period,10:31,11:21
-4th period,11:25,12:15
-Period X,12:19,12:59
-Lunch,12:59,13:29
-5th period,13:33,14:23
-6th period,14:27,15:17
+period,start,end,special
+Morning Meeting,8:00,8:10,0
+1st period,8:13,9:03,0
+2nd period,9:07,9:57,0
+Laboratory,10:01,10:31,0
+3rd period,10:31,11:21,0
+4th period,11:25,12:15,0
+Period X,12:19,12:59,0
+Lunch,12:59,13:29,0
+5th period,13:33,14:23,0
+6th period,14:27,15:17,0
+1st period,9:14,10:04,1
+2nd period,10:08,10:58,1
+3rd period,11:02,11:52,1
+4th period,11:56,12:46,1
+5th period,13:33,14:23,1
+6th period,14:27,15:17,1
+2nd period,14:27,15:17,2
+6th period,9:07,9:57,2
+Period X,9:07,9:57,3
+2nd period,12:19,12:59,3
+1st period,8:13,9:00,4
+2nd period,9:04,10:04,4
+Laboratory,10:08,10:38,4
+3rd period,10:42,11:29,4
+4th period,11:33,12:20,4
+Period X,12:24,13:04,4
+Lunch,13:04,13:35,4
+5th period,13:39,14:26,4
+6th period,14:30,15:17,4
+1st period,8:13,8:58,5
+2nd period,9:02,9:47,5
+Laboratory,9:51,10:21,5
+3rd period,10:25,11:10,5
+4th period,11:14,11:59,5
+Period X,12:03,12:39,5
+5th period,12:43,13:28,5
+Lunch,13:28,13:58,5
+6th period,14:02,14:47,5
+Morning Meeting,8:00,8:04,6
+1st period,8:07,8:47,6
+3rd period,8:51,9:31,6
+Laboratory,9:35,10:05,6
+4th period,10:09,10:49,6
+Period X,10:53,11:26,6
+2nd period,11:30,13:15,6
+Lunch,13:19,13:49,6
+5th period,13:53,14:33,6
+6th period,14:37,15:17,6
+Morning Meeting,8:00,8:02,7
+1st period,8:06,8:54,7
+4th period,8:58,9:46,7
+Laboratory,9:50,10:18,7
+3rd period,10:22,11:10,7
+Lunch,11:10,13:30,7
+5th period,13:35,14:24,7
+6th period,14:28,15:17,7
+1st period,8:13,8:54,8
+2nd period,8:58,9:39,8
+3rd period,9:43,10:24,8
+4th period,10:28,11:09,8
+5th period,11:58,12:39,8
+Lunch,12:39,13:11,8
+6th period,13:15,13:56,8
+
