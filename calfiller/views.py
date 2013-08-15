@@ -68,7 +68,7 @@ def login():
 
         if u and u.check_password(request.form['password']):
             session['admin_logged_in'] = True
-            session['school_id'] = u.id
+            session['admin_school_id'] = u.id
             flash('Logged in as {}'.format(u.name))
             return redirect(url_for('admin'))
         else:
@@ -86,12 +86,12 @@ def logout():
 
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
-    if not session.get('admin_logged_in'):
+    if not session.get('admin_logged_in') or not session.get('admin_school_id'):
         return redirect(url_for('login'))
 
     error = None
-
-    g.school = School.query.get_or_404(session['school_id'])
+    session['school_id'] = session['admin_school_id']
+    g.school = School.query.get_or_404(session['admin_school_id'])
 
     if request.method == 'POST':
         uploaded_file = request.files.get('file')
