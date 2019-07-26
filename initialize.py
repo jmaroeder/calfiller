@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 db.init_app(app)
 with app.test_request_context():
+	db.drop_all()
 	db.create_all()
 
 
@@ -12,3 +13,45 @@ db.session.add(School(name='Hathaway Brown Middle School', short_name='hbms', pa
 db.session.add(School(name='Hathaway Brown Primary School', short_name='hbps', password_hash=generate_password_hash('brown')))
 db.session.commit()
 
+def load_sample_data():
+    school = School.query.filter_by(short_name='hbus').first()
+    # upload periods
+    with open('periods_us.csv', 'rU') as f:
+        assert import_periods(f, school) == 10
+
+    # upload day names
+    with open('day_names.csv', 'rU') as f:
+        assert import_letter_days(f, school) == 6
+
+    # upload dates_days
+    with open('dates_days_us.csv', 'rU') as f:
+        assert import_dates_days(f, school) == 165
+
+
+    school = School.query.filter_by(short_name='hbms').first()
+    # upload periods
+    with open('periods_ms.csv', 'rU') as f:
+        assert import_periods(f, school) == 20
+
+    # upload day names
+    with open('day_names.csv', 'rU') as f:
+        assert import_letter_days(f, school) == 6
+
+    # upload dates_days
+    with open('dates_days_ms.csv', 'rU') as f:
+        assert import_dates_days(f, school) == 164
+
+
+    school = School.query.filter_by(short_name='hbps').first()
+    # NO periods
+
+    # upload day names
+    with open('day_names.csv', 'rU') as f:
+        assert import_letter_days(f, school) == 6
+
+    # upload dates_days
+    with open('dates_days_us.csv', 'rU') as f:
+        assert import_dates_days(f, school) == 165
+
+
+load_sample_data()
