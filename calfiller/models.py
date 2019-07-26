@@ -159,6 +159,7 @@ def import_dates_days(f, school, clear=True):
 
     reader = csv.DictReader(f)
     for r in reader:
+        print(r['day_name'])
         letter_day = LetterDay.query.filter_by(school=school, name=r['day_name']).first()
         special = r.get('special')
         db.session.add(DatesDays(date=parse_date(r['date']),
