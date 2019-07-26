@@ -17,29 +17,29 @@ def load_sample_data():
     school = School.query.filter_by(short_name='hbus').first()
     # upload periods
     with open('periods_us.csv', 'rU') as f:
-        assert import_periods(f, school) == 10
+        assert import_periods(f, school)
 
     # upload day names
     with open('day_names.csv', 'rU') as f:
-        assert import_letter_days(f, school) == 6
+        assert import_letter_days(f, school)
 
     # upload dates_days
     with open('dates_days_us.csv', 'rU') as f:
-        assert import_dates_days(f, school) == 165
+        assert import_dates_days(f, school)
 
 
     school = School.query.filter_by(short_name='hbms').first()
     # upload periods
     with open('periods_ms.csv', 'rU') as f:
-        assert import_periods(f, school) == 20
+        assert import_periods(f, school)
 
     # upload day names
     with open('day_names.csv', 'rU') as f:
-        assert import_letter_days(f, school) == 6
+        assert import_letter_days(f, school)
 
     # upload dates_days
     with open('dates_days_ms.csv', 'rU') as f:
-        assert import_dates_days(f, school) == 164
+        assert import_dates_days(f, school)
 
 
     school = School.query.filter_by(short_name='hbps').first()
@@ -47,11 +47,11 @@ def load_sample_data():
 
     # upload day names
     with open('day_names.csv', 'rU') as f:
-        assert import_letter_days(f, school) == 6
+        assert import_letter_days(f, school)
 
     # upload dates_days
     with open('dates_days_us.csv', 'rU') as f:
-        assert import_dates_days(f, school) == 165
+        assert import_dates_days(f, school)
 
 
 load_sample_data()
