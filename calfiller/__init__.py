@@ -9,7 +9,7 @@ Copyright (c) 2013 __MyCompanyName__. All rights reserved.
 import os
 
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
 # create app
 app = Flask(__name__)
