@@ -31,7 +31,7 @@ def cal_table(school_name):
         
         # process form fields
         r = re.compile(r'sched_(\d+)_(\d+)')
-        for key, value in request.form.iteritems():
+        for key, value in request.form.items():
             res = r.match(key)
             value = value.strip()
             if res and value:
